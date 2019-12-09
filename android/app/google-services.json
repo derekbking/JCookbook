@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "657018671110",
+    "firebase_url": "https://cookbook-cd864.firebaseio.com",
+    "project_id": "cookbook-cd864",
+    "storage_bucket": "cookbook-cd864.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657018671110:android:2c2ba2740820e320d6b387",
+        "android_client_info": {
+          "package_name": "com.derek.cookbook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "657018671110-qcdpbos0c5ib78eme4mtrvs6eln1m9t5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGL5twCW69GBd_dggrrWkMzX3g0cliQJU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "657018671110-qcdpbos0c5ib78eme4mtrvs6eln1m9t5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "657018671110-u2d9b2o8iidrh2osmebjjouas9m1bhet.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.derek.cookbook"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
