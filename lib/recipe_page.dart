@@ -40,7 +40,10 @@ class _RecipePageState extends State<RecipePage> {
                           children: [
                         TextSpan(
                             text: step,
-                            style: TextStyle(color: Colors.grey[700], fontSize: 14.0, fontFamily: "Cairo-SemiBold"))
+                            style: TextStyle(
+                                color: Colors.grey[700],
+                                fontSize: 14.0,
+                                fontFamily: "Cairo-SemiBold"))
                       ]))));
         })
         .values
@@ -57,30 +60,40 @@ class _RecipePageState extends State<RecipePage> {
                   transitionOnUserGestures: true,
                   tag: slide["title"],
                   child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16.0),
+                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16.0), bottomRight: Radius.circular(16.0)),
                       child: Container(
-                          decoration: BoxDecoration(color: Colors.black, boxShadow: [
-                            BoxShadow(color: Colors.black12, offset: Offset(3.0, 6.0), blurRadius: 10.0)
-                          ]),
+                          decoration: BoxDecoration(
+                              color: Colors.black,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black12,
+                                    offset: Offset(3.0, 6.0),
+                                    blurRadius: 10.0)
+                              ]),
                           child: AspectRatio(
                               aspectRatio: cardAspectRatio,
                               child: Stack(
                                 fit: StackFit.expand,
                                 children: <Widget>[
-                                  Image.network(slide["img"], fit: BoxFit.cover),
+                                  Image.network(slide["img"],
+                                      fit: BoxFit.cover),
                                   Align(
                                     alignment: Alignment.bottomLeft,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       mainAxisAlignment: MainAxisAlignment.end,
-                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
                                       children: <Widget>[
                                         Padding(
-                                          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16.0, vertical: 8.0),
                                           child: Container(
-                                              padding: EdgeInsets.only(left: 10, right: 10),
+                                              padding: EdgeInsets.only(
+                                                  left: 10, right: 10),
                                               decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(8.0)),
                                                 color: Colors.black87,
                                               ),
                                               child: new Material(
@@ -89,7 +102,8 @@ class _RecipePageState extends State<RecipePage> {
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 25.0,
-                                                          fontFamily: "Cairo-SemiBold")))),
+                                                          fontFamily:
+                                                              "Cairo-SemiBold")))),
                                         ),
                                         SizedBox(
                                           height: 10.0,
@@ -106,22 +120,27 @@ class _RecipePageState extends State<RecipePage> {
                   padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
                   child: RichText(
                       text: TextSpan(
-                          text: "Ingredients\n",
+                          text: "Ingredients",
                           style: TextStyle(
                               color: Colors.grey[800],
                               fontSize: 22.0,
                               fontFamily: "Cairo-SemiBold",
                               fontWeight: FontWeight.bold),
                           children: [
-                        ...(slide["ingredients"]).map((ingredient) => [
-                              TextSpan(
-                                  text: "•",
-                                  style: TextStyle(color: Colors.grey[700], fontSize: 14.0, fontFamily: "Roboto Mono")),
-                              TextSpan(
-                                  text: ingredient,
-                                  style:
-                                      TextStyle(color: Colors.grey[700], fontSize: 14.0, fontFamily: "Cairo-SemiBold"))
-                            ])
+                        ...(slide["ingredients"]).map((ingredient) => TextSpan(
+                                text: "\n•",
+                                style: TextStyle(
+                                    color: Colors.grey[700],
+                                    fontSize: 14.0,
+                                    fontFamily: "Roboto Mono"),
+                                children: [
+                                  TextSpan(
+                                    text: "$ingredient",
+                                      style: TextStyle(
+                                          color: Colors.grey[700],
+                                          fontSize: 14.0,
+                                          fontFamily: "Cairo-SemiBold"))
+                                ]))
                       ]))),
               ...steps
             ])));

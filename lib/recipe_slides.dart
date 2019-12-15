@@ -80,7 +80,7 @@ class _RecipeSlidesState extends State<RecipeSlides> {
 
   openCurrentPage() {
     Navigator.push(
-        context, CupertinoPageRoute(builder: (context) => RecipePage(slide: lastSlideList[currentPage.toInt()])));
+        context, MaterialPageRoute(builder: (context) => RecipePage(slide: lastSlideList[currentPage.toInt()])));
   }
 
   @override
