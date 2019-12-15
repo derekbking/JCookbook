@@ -62,8 +62,8 @@ class _RecipeSlidesState extends State<RecipeSlides> {
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
           setState(() {
-            // controller.animateToPage(data.documents.length - 1,
-            //     duration: Duration(milliseconds: 600), curve: Curves.easeOut);
+            controller.animateToPage(data.documents.length - 1,
+                duration: Duration(milliseconds: 600), curve: Curves.easeOut);
           });
         });
       });

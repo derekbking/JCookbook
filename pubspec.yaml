@@ -3,7 +3,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.2 <3.0.0"
 
 dependencies:
   flutter:
@@ -30,3 +30,6 @@ flutter:
     - family: Roboto Mono
       fonts:
         - asset: assets/RobotoMono-Regular.ttf
+    - family:  MenuIcons
+      fonts:
+       - asset: assets/MenuIcons.ttf

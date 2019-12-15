@@ -20,6 +20,32 @@ class _RecipePageState extends State<RecipePage> {
 
   @override
   Widget build(BuildContext context) {
+    print(slide);
+
+    var steps = (slide["steps"] as List<dynamic>)
+        .asMap()
+        .map((index, step) {
+          return MapEntry(
+              index,
+              Padding(
+                  padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                  child: RichText(
+                      text: TextSpan(
+                          text: "Step ${index + 1}\n",
+                          style: TextStyle(
+                              color: Colors.grey[800],
+                              fontSize: 22.0,
+                              fontFamily: "Cairo-SemiBold",
+                              fontWeight: FontWeight.bold),
+                          children: [
+                        TextSpan(
+                            text: step,
+                            style: TextStyle(color: Colors.grey[700], fontSize: 14.0, fontFamily: "Cairo-SemiBold"))
+                      ]))));
+        })
+        .values
+        .toList();
+
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -87,59 +113,17 @@ class _RecipePageState extends State<RecipePage> {
                               fontFamily: "Cairo-SemiBold",
                               fontWeight: FontWeight.bold),
                           children: [
-                        TextSpan(
-                            text:
-                                '• Toast\n• Avocado\n• 1-2 Eggs\n• Everything, but bagle seasoning',
-                            style: TextStyle(color: Colors.grey[700], fontSize: 14.0, fontFamily: "Cairo-SemiBold"))
+                        ...(slide["ingredients"]).map((ingredient) => [
+                              TextSpan(
+                                  text: "•",
+                                  style: TextStyle(color: Colors.grey[700], fontSize: 14.0, fontFamily: "Roboto Mono")),
+                              TextSpan(
+                                  text: ingredient,
+                                  style:
+                                      TextStyle(color: Colors.grey[700], fontSize: 14.0, fontFamily: "Cairo-SemiBold"))
+                            ])
                       ]))),
-              Padding(
-                  padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                  child: RichText(
-                      text: TextSpan(
-                          text: "Step 1\n",
-                          style: TextStyle(
-                              color: Colors.grey[800],
-                              fontSize: 22.0,
-                              fontFamily: "Cairo-SemiBold",
-                              fontWeight: FontWeight.bold),
-                          children: [
-                        TextSpan(
-                            text:
-                                'Lorem ipsum dolor sit amet, veritus partiendo his te, eu mel iusto iisque veritus. An nec ullum phaedrum. Autem accusam urbanitas eu quo, elitr everti facilisis quo at. Duo noster omnesque tacimates no. Ex velit fabulas usu, ius dicat augue in. Laudem pertinacia no eum, ipsum hendrerit eam ut, mei at facilis luptatum constituto. Veniam impedit epicurei pri et.',
-                            style: TextStyle(color: Colors.grey[700], fontSize: 14.0, fontFamily: "Cairo-SemiBold"))
-                      ]))),
-              Padding(
-                  padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                  child: RichText(
-                      text: TextSpan(
-                          text: "Step 2\n",
-                          style: TextStyle(
-                              color: Colors.grey[800],
-                              fontSize: 22.0,
-                              fontFamily: "Cairo-SemiBold",
-                              fontWeight: FontWeight.bold),
-                          children: [
-                        TextSpan(
-                            text:
-                                'Lorem ipsum dolor sit amet, veritus partiendo his te, eu mel iusto iisque veritus. An nec ullum phaedrum. Autem accusam urbanitas eu quo, elitr everti facilisis quo at. Duo noster omnesque tacimates no. Ex velit fabulas usu, ius dicat augue in. Laudem pertinacia no eum, ipsum hendrerit eam ut, mei at facilis luptatum constituto. Veniam impedit epicurei pri et.',
-                            style: TextStyle(color: Colors.grey[700], fontSize: 14.0, fontFamily: "Cairo-SemiBold"))
-                      ]))),
-              Padding(
-                  padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                  child: RichText(
-                      text: TextSpan(
-                          text: "Step 3\n",
-                          style: TextStyle(
-                              color: Colors.grey[800],
-                              fontSize: 22.0,
-                              fontFamily: "Cairo-SemiBold",
-                              fontWeight: FontWeight.bold),
-                          children: [
-                        TextSpan(
-                            text:
-                                'Lorem ipsum dolor sit amet, veritus partiendo his te, eu mel iusto iisque veritus. An nec ullum phaedrum. Autem accusam urbanitas eu quo, elitr everti facilisis quo at. Duo noster omnesque tacimates no. Ex velit fabulas usu, ius dicat augue in. Laudem pertinacia no eum, ipsum hendrerit eam ut, mei at facilis luptatum constituto. Veniam impedit epicurei pri et.',
-                            style: TextStyle(color: Colors.grey[700], fontSize: 14.0, fontFamily: "Cairo-SemiBold"))
-                      ])))
+              ...steps
             ])));
   }
 }
