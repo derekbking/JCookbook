@@ -8,9 +8,6 @@ import 'package:provider/provider.dart';
 import 'data.dart';
 
 class MenuScreen extends StatelessWidget {
-  final String imageUrl =
-      "https://celebritypets.net/wp-content/uploads/2016/12/Adriana-Lima.jpg";
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -21,11 +18,7 @@ class MenuScreen extends StatelessWidget {
         }
       },
       child: Container(
-        padding: EdgeInsets.only(
-            top: 62,
-            left: 32,
-            bottom: 8,
-            right: MediaQuery.of(context).size.width / 2.9),
+        padding: EdgeInsets.only(top: 62, left: 32, bottom: 8, right: MediaQuery.of(context).size.width / 2.9),
         color: Colors.grey[100],
         child: Column(
           children: <Widget>[
@@ -46,38 +39,36 @@ class MenuScreen extends StatelessWidget {
             Column(
               children: options.map((item) {
                 return Material(
-                  color: Colors.transparent,
-                  child: ListTile(
-                    leading: Icon(
-                      item.icon,
-                      size: 20,
-                    ),
-                    title: Text(
-                      item.title,
-                      style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    onTap: () {
-                      Provider.of<SlideController>(context, listen: true).updateCategory(item.title);
-                      Future.delayed(Duration(milliseconds: 500), () => Provider.of<MenuController>(context, listen: true).close());
-                    }
-                ));
+                    color: Colors.transparent,
+                    child: ListTile(
+                        leading: Icon(
+                          item.icon,
+                          size: 20,
+                        ),
+                        title: Text(
+                          item.title,
+                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                        ),
+                        onTap: () {
+                          Provider.of<SlideController>(context, listen: true).updateCategory(item.title);
+                          Future.delayed(Duration(milliseconds: 500),
+                              () => Provider.of<MenuController>(context, listen: true).close());
+                        }));
               }).toList(),
             ),
             Spacer(),
             Material(
-              color: Colors.transparent,
-              child:  ListTile(
-              onTap: () {
-                Navigator.push(context, CupertinoPageRoute(builder: (context) => RecipeCreator()));
-              },
-              leading: Icon(
-                Icons.settings,
-                size: 20,
-              ),
-              title: Text('Manage Recipes', style: TextStyle(fontSize: 14)),
-            )),
+                color: Colors.transparent,
+                child: ListTile(
+                  onTap: () {
+                    Navigator.push(context, CupertinoPageRoute(builder: (context) => RecipeCreator()));
+                  },
+                  leading: Icon(
+                    Icons.settings,
+                    size: 20,
+                  ),
+                  title: Text('Manage Recipes', style: TextStyle(fontSize: 14)),
+                )),
           ],
         ),
       ),

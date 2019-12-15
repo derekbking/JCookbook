@@ -11,6 +11,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   cloud_firestore: ^0.12.9+5
   provider: ^2.0.0
+  image_picker: ^0.6.2+3
 
 dev_dependencies:
   flutter_test:
@@ -26,3 +27,6 @@ flutter:
     - family: Cairo-SemiBold
       fonts:
         - asset: assets/Cairo-SemiBold.ttf
+    - family: Roboto Mono
+      fonts:
+        - asset: assets/RobotoMono-Regular.ttf

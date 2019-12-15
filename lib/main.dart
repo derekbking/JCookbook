@@ -27,7 +27,7 @@ class Cookbook extends StatefulWidget {
   _CookbookState createState() => _CookbookState();
 }
 
-class _CookbookState extends State<Cookbook>  with TickerProviderStateMixin {
+class _CookbookState extends State<Cookbook> with TickerProviderStateMixin {
   MenuController menuController;
   SlideController slideController;
 
@@ -62,7 +62,7 @@ class _CookbookState extends State<Cookbook>  with TickerProviderStateMixin {
     print('INIT STATE: Cookbook');
 
     contentScreen = AppWindow(slideController.category, key: key);
-    
+
     slideController.addListener(() {
       setState(() {
         print('Setting state');
@@ -83,12 +83,8 @@ class _CookbookState extends State<Cookbook>  with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          builder: (context) => menuController
-        ),
-        ChangeNotifierProvider(
-          builder: (context) => slideController
-        )
+        ChangeNotifierProvider(builder: (context) => menuController),
+        ChangeNotifierProvider(builder: (context) => slideController)
       ],
       child: ZoomScaffold(
         menuScreen: MenuScreen(),
@@ -107,57 +103,52 @@ class AppWindow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color(0xFFFFFFFF),
-            Color(0xFFFFFFFF),
-          ],
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
-          tileMode: TileMode.clamp)),
+          gradient: LinearGradient(colors: [
+        Color(0xFFFFFFFF),
+        Color(0xFFFFFFFF),
+      ], begin: Alignment.bottomCenter, end: Alignment.topCenter, tileMode: TileMode.clamp)),
       child: Scaffold(
-      backgroundColor: Colors.transparent,
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 30.0, bottom: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(
-                      Icons.menu,
-                      color: Colors.black,
-                      size: 30.0,
-                    ),
-                    onPressed: () {
-                      Provider.of<MenuController>(context, listen: true).open();
-                    },
+          backgroundColor: Colors.transparent,
+          body: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 30.0, bottom: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(
+                          Icons.menu,
+                          color: Colors.black,
+                          size: 30.0,
+                        ),
+                        onPressed: () {
+                          Provider.of<MenuController>(context, listen: true).open();
+                        },
+                      ),
+                    ],
                   ),
-                  
-                ],
-              ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(title,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 46.0,
+                            fontFamily: "Cairo-SemiBold",
+                            letterSpacing: 1.0,
+                          )),
+                    ],
+                  ),
+                ),
+                RecipeSlides(tag: title.toLowerCase())
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(title,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 46.0,
-                        fontFamily: "Cairo-SemiBold",
-                        letterSpacing: 1.0,
-                      )),
-                ],
-              ),
-            ),
-            RecipeSlides(tag: title.toLowerCase())
-          ],
-        ),
-      )),
+          )),
     );
   }
 }
@@ -185,57 +176,52 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Color(0xFFFFFFFF),
-            Color(0xFFFFFFFF),
-          ],
-          begin: Alignment.bottomCenter,
-          end: Alignment.topCenter,
-          tileMode: TileMode.clamp)),
+          gradient: LinearGradient(colors: [
+        Color(0xFFFFFFFF),
+        Color(0xFFFFFFFF),
+      ], begin: Alignment.bottomCenter, end: Alignment.topCenter, tileMode: TileMode.clamp)),
       child: Scaffold(
-      backgroundColor: Colors.transparent,
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 30.0, bottom: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(
-                      Icons.menu,
-                      color: Colors.black,
-                      size: 30.0,
-                    ),
-                    onPressed: () {
-                      Provider.of<MenuController>(context, listen: true).open();
-                    },
+          backgroundColor: Colors.transparent,
+          body: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 30.0, bottom: 8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(
+                          Icons.menu,
+                          color: Colors.black,
+                          size: 30.0,
+                        ),
+                        onPressed: () {
+                          Provider.of<MenuController>(context, listen: true).open();
+                        },
+                      ),
+                    ],
                   ),
-                  
-                ],
-              ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text(widget.category,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 46.0,
+                            fontFamily: "Cairo-SemiBold",
+                            letterSpacing: 1.0,
+                          )),
+                    ],
+                  ),
+                ),
+                RecipeSlides(tag: widget.category.toLowerCase())
+              ],
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(widget.category,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 46.0,
-                        fontFamily: "Cairo-SemiBold",
-                        letterSpacing: 1.0,
-                      )),
-                ],
-              ),
-            ),
-            RecipeSlides(tag: widget.category.toLowerCase())
-          ],
-        ),
-      )),
+          )),
     );
   }
 }

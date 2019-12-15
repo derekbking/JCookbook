@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cookbook/recipe_page.dart';
+import 'package:cookbook/recipe_card.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -46,9 +49,9 @@ class _RecipeSlidesState extends State<RecipeSlides> {
     _queryDb();
   }
 
-  void _queryDb() async {    
+  void _queryDb() async {
     Query query = db.collection('recipes').where('tags', arrayContains: tag);
-    
+
     var snapshots = query.snapshots();
 
     slides = snapshots.map((list) => list.documents.map((doc) => doc.data));
@@ -56,9 +59,12 @@ class _RecipeSlidesState extends State<RecipeSlides> {
     sub = query.snapshots().listen((data) {
       Future.delayed(Duration(milliseconds: 50), () {
         if (sub == null) return;
-        
-        setState(() {
-          controller.animateToPage(data.documents.length - 1, duration: Duration(milliseconds: 600), curve: Curves.easeOut);
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          setState(() {
+            // controller.animateToPage(data.documents.length - 1,
+            //     duration: Duration(milliseconds: 600), curve: Curves.easeOut);
+          });
         });
       });
     });
@@ -72,6 +78,11 @@ class _RecipeSlidesState extends State<RecipeSlides> {
     super.dispose();
   }
 
+  openCurrentPage() {
+    Navigator.push(
+        context, CupertinoPageRoute(builder: (context) => RecipePage(slide: lastSlideList[currentPage.toInt()])));
+  }
+
   @override
   Widget build(BuildContext context) {
     if (controller == null) {
@@ -82,6 +93,10 @@ class _RecipeSlidesState extends State<RecipeSlides> {
       children: <Widget>[
         _buildSlides(),
         Positioned.fill(
+            child: GestureDetector(
+          onTap: () {
+            openCurrentPage();
+          },
           child: PageView.builder(
             itemCount: currentLength,
             controller: controller,
@@ -90,23 +105,25 @@ class _RecipeSlidesState extends State<RecipeSlides> {
               return Container();
             },
           ),
-        )
+        ))
       ],
     );
   }
 
+  var lastSlideList;
+
   Widget _buildSlides() {
     return StreamBuilder(
-      stream: slides,
-      initialData: [],
-      builder: (context, AsyncSnapshot snap) {
-        List slideList = snap.data.toList();
+        stream: slides,
+        initialData: [],
+        builder: (context, AsyncSnapshot snap) {
+          List slideList = snap.data.toList();
+          lastSlideList = slideList;
 
-        currentLength = slideList.length;
-        
-        return CardScrollWidget(currentPage, slideList);
-      }
-    );
+          currentLength = slideList.length;
+
+          return CardScrollWidget(currentPage, slideList);
+        });
   }
 }
 
@@ -124,93 +141,100 @@ class CardScrollWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new AspectRatio(
-      aspectRatio: widgetAspectRatio,
-      child: LayoutBuilder(builder: (context, contraints) {
-        var width = contraints.maxWidth;
-        var height = contraints.maxHeight;
+    return GestureDetector(
+        onTap: () {
+          // Navigator.push(context, CupertinoPageRoute(builder: (context) => RecipePage(slide: lastSlid[currentPage])));
+        },
+        child: AspectRatio(
+          aspectRatio: widgetAspectRatio,
+          child: LayoutBuilder(builder: (context, contraints) {
+            var width = contraints.maxWidth;
+            var height = contraints.maxHeight;
 
-        var safeWidth = width - 2 * padding;
-        var safeHeight = height - 2 * padding;
+            var safeWidth = width - 2 * padding;
+            var safeHeight = height - 2 * padding;
 
-        var heightOfPrimaryCard = safeHeight;
-        var widthOfPrimaryCard = heightOfPrimaryCard * cardAspectRatio;
+            var heightOfPrimaryCard = safeHeight;
+            var widthOfPrimaryCard = heightOfPrimaryCard * cardAspectRatio;
 
-        var primaryCardLeft = safeWidth - widthOfPrimaryCard;
-        var horizontalInset = primaryCardLeft / 2;
+            var primaryCardLeft = safeWidth - widthOfPrimaryCard;
+            var horizontalInset = primaryCardLeft / 2;
 
-        List<Widget> cardList = new List();
+            List<Widget> cardList = new List();
 
-        for (var i = 0; i < slides.length; i++) {
-          var delta = i - currentPage;
-          bool isOnRight = delta > 0;
+            for (var i = 0; i < slides.length; i++) {
+              var delta = i - currentPage;
+              bool isOnRight = delta > 0;
 
-          var start = padding +
-              max(
-                  primaryCardLeft -
-                      horizontalInset * -delta * (isOnRight ? 15 : 1),
-                  0.0);
+              var start = padding + max(primaryCardLeft - horizontalInset * -delta * (isOnRight ? 15 : 1), 0.0);
 
-          var cardItem = Positioned.directional(
-            top: padding + verticalInset * max(-delta, 0.0),
-            bottom: padding + verticalInset * max(-delta, 0.0),
-            start: start,
-            textDirection: TextDirection.rtl,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16.0),
-              child: Container(
-                decoration: BoxDecoration(color: Colors.black, boxShadow: [
-                  BoxShadow(
-                      color: Colors.black12,
-                      offset: Offset(3.0, 6.0),
-                      blurRadius: 10.0)
-                ]),
-                child: AspectRatio(
-                  aspectRatio: cardAspectRatio,
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: <Widget>[
-                      Image.network(slides[i]['img'], fit: BoxFit.cover),
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 16.0, vertical: 8.0),
-                              child: Container(
-                                padding: EdgeInsets.only(left: 10, right: 10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                                  color: Colors.black87,
-                                ),
-                                child: Text(slides[i]['title'],
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 25.0,
-                                      fontFamily: "Cairo-SemiBold"))),
+              var cardItem = Positioned.directional(
+                  top: padding + verticalInset * max(-delta, 0.0),
+                  bottom: padding + verticalInset * max(-delta, 0.0),
+                  start: start,
+                  textDirection: TextDirection.rtl,
+                  child: GestureDetector(
+                    onTap: () {
+                      print("Clicked!");
+                      Navigator.push(context, CupertinoPageRoute(builder: (context) => RecipePage(slide: slides[i])));
+                    },
+                    child: Hero(
+                        transitionOnUserGestures: true,
+                        tag: slides[i]["title"],
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16.0),
+                          child: Container(
+                            decoration: BoxDecoration(color: Colors.black, boxShadow: [
+                              BoxShadow(color: Colors.black12, offset: Offset(3.0, 6.0), blurRadius: 10.0)
+                            ]),
+                            child: AspectRatio(
+                              aspectRatio: cardAspectRatio,
+                              child: Stack(
+                                fit: StackFit.expand,
+                                children: <Widget>[
+                                  Image.network(slides[i]["img"], fit: BoxFit.cover),
+                                  Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                                          child: Container(
+                                              padding: EdgeInsets.only(left: 10, right: 10),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                                                color: Colors.black87,
+                                              ),
+                                              child: new Material(
+                                                  color: Colors.transparent,
+                                                  child: Text(slides[i]["title"],
+                                                      style: TextStyle(
+                                                          decoration: null,
+                                                          color: Colors.white,
+                                                          fontSize: 25.0,
+                                                          fontFamily: "Cairo-SemiBold")))),
+                                        ),
+                                        SizedBox(
+                                          height: 10.0,
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                            SizedBox(
-                              height: 10.0,
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-          cardList.add(cardItem);
-        }
-        return Stack(
-          children: cardList,
-        );
-      }),
-    );
+                          ),
+                        )),
+                  ));
+              cardList.add(cardItem);
+            }
+            return Stack(
+              children: cardList,
+            );
+          }),
+        ));
   }
 }
 
