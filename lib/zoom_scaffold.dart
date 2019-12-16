@@ -150,6 +150,8 @@ class MenuController extends ChangeNotifier {
         }
         notifyListeners();
       });
+
+      animationController.value = animationController.upperBound;
   }
 
   @override

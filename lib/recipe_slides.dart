@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cookbook/recipe_page.dart';
 import 'package:cookbook/recipe_card.dart';
@@ -80,7 +81,10 @@ class _RecipeSlidesState extends State<RecipeSlides> {
 
   openCurrentPage() {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => RecipePage(slide: lastSlideList[currentPage.toInt()])));
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                RecipePage(slide: lastSlideList[currentPage.toInt()])));
   }
 
   @override
@@ -166,7 +170,11 @@ class CardScrollWidget extends StatelessWidget {
               var delta = i - currentPage;
               bool isOnRight = delta > 0;
 
-              var start = padding + max(primaryCardLeft - horizontalInset * -delta * (isOnRight ? 15 : 1), 0.0);
+              var start = padding +
+                  max(
+                      primaryCardLeft -
+                          horizontalInset * -delta * (isOnRight ? 15 : 1),
+                      0.0);
 
               var cardItem = Positioned.directional(
                   top: padding + verticalInset * max(-delta, 0.0),
@@ -176,7 +184,11 @@ class CardScrollWidget extends StatelessWidget {
                   child: GestureDetector(
                     onTap: () {
                       print("Clicked!");
-                      Navigator.push(context, CupertinoPageRoute(builder: (context) => RecipePage(slide: slides[i])));
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) =>
+                                  RecipePage(slide: slides[i])));
                     },
                     child: Hero(
                         transitionOnUserGestures: true,
@@ -184,37 +196,55 @@ class CardScrollWidget extends StatelessWidget {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(16.0),
                           child: Container(
-                            decoration: BoxDecoration(color: Colors.black, boxShadow: [
-                              BoxShadow(color: Colors.black12, offset: Offset(3.0, 6.0), blurRadius: 10.0)
-                            ]),
+                            decoration: BoxDecoration(
+                                color: Colors.black,
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.black12,
+                                      offset: Offset(3.0, 6.0),
+                                      blurRadius: 10.0)
+                                ]),
                             child: AspectRatio(
                               aspectRatio: cardAspectRatio,
                               child: Stack(
                                 fit: StackFit.expand,
                                 children: <Widget>[
-                                  Image.network(slides[i]["img"], fit: BoxFit.cover),
+                                  CachedNetworkImage(
+                                    imageUrl: slides[i]["img"],
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) =>
+                                        SizedBox(width: 30, height: 30, child: Container(color: Colors.grey)),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.error),
+                                  ),
                                   Align(
                                     alignment: Alignment.bottomLeft,
                                     child: Column(
                                       mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Padding(
-                                          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 16.0, vertical: 8.0),
                                           child: Container(
-                                              padding: EdgeInsets.only(left: 10, right: 10),
+                                              padding: EdgeInsets.only(
+                                                  left: 10, right: 10),
                                               decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(8.0)),
                                                 color: Colors.black87,
                                               ),
                                               child: new Material(
                                                   color: Colors.transparent,
-                                                  child: Text(slides[i]["title"],
+                                                  child: Text(
+                                                      slides[i]["title"],
                                                       style: TextStyle(
                                                           decoration: null,
                                                           color: Colors.white,
                                                           fontSize: 25.0,
-                                                          fontFamily: "Cairo-SemiBold")))),
+                                                          fontFamily:
+                                                              "Cairo-SemiBold")))),
                                         ),
                                         SizedBox(
                                           height: 10.0,

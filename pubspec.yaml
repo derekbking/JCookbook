@@ -1,5 +1,5 @@
 name: cookbook
-description: A new Flutter project.
+description: Jordyn's personal cookbook :)
 version: 1.0.0+1
 
 environment:
@@ -12,6 +12,7 @@ dependencies:
   cloud_firestore: ^0.12.9+5
   provider: ^2.0.0
   image_picker: ^0.6.2+3
+  cached_network_image: ^2.0.0-rc
 
 dev_dependencies:
   flutter_test:

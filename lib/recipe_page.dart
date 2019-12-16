@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cookbook/recipe_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -51,6 +52,12 @@ class _RecipePageState extends State<RecipePage> {
 
     return Scaffold(
         backgroundColor: Colors.white,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: new Icon(Icons.arrow_back),
+        ),
         body: SingleChildScrollView(
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,7 +67,9 @@ class _RecipePageState extends State<RecipePage> {
                   transitionOnUserGestures: true,
                   tag: slide["title"],
                   child: ClipRRect(
-                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(16.0), bottomRight: Radius.circular(16.0)),
+                      borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(16.0),
+                          bottomRight: Radius.circular(16.0)),
                       child: Container(
                           decoration: BoxDecoration(
                               color: Colors.black,
@@ -75,8 +84,14 @@ class _RecipePageState extends State<RecipePage> {
                               child: Stack(
                                 fit: StackFit.expand,
                                 children: <Widget>[
-                                  Image.network(slide["img"],
-                                      fit: BoxFit.cover),
+                                  CachedNetworkImage(
+                                    imageUrl: slide["img"],
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) =>
+                                        SizedBox(width: 30, height: 30, child: CircularProgressIndicator()),
+                                    errorWidget: (context, url, error) =>
+                                        Icon(Icons.error),
+                                  ),
                                   Align(
                                     alignment: Alignment.bottomLeft,
                                     child: Column(
@@ -135,7 +150,7 @@ class _RecipePageState extends State<RecipePage> {
                                     fontFamily: "Roboto Mono"),
                                 children: [
                                   TextSpan(
-                                    text: "$ingredient",
+                                      text: "$ingredient",
                                       style: TextStyle(
                                           color: Colors.grey[700],
                                           fontSize: 14.0,

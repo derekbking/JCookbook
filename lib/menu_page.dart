@@ -31,6 +31,7 @@ class MenuScreen extends StatelessWidget {
                   'Jordyn\'s Cookbook',
                   style: TextStyle(
                     fontSize: 20,
+                    fontWeight: FontWeight.w300
                   ),
                 )
               ],
@@ -47,7 +48,7 @@ class MenuScreen extends StatelessWidget {
                         ),
                         title: Text(
                           item.title,
-                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: 14, fontWeight: Provider.of<SlideController>(context, listen: true).category == item.title ? FontWeight.bold : FontWeight.normal),
                         ),
                         onTap: () {
                           Provider.of<SlideController>(context, listen: true).updateCategory(item.title);

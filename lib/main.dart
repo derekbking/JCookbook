@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'menu_page.dart';
+import 'data.dart';
 
 void main() => runApp(MyApp());
 
@@ -103,17 +104,22 @@ class AppWindow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [
-        Color(0xFFFFFFFF),
-        Color(0xFFFFFFFF),
-      ], begin: Alignment.bottomCenter, end: Alignment.topCenter, tileMode: TileMode.clamp)),
+          gradient: LinearGradient(
+              colors: [
+            Color(0xFFFFFFFF),
+            Color(0xFFFFFFFF),
+          ],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              tileMode: TileMode.clamp)),
       child: Scaffold(
           backgroundColor: Colors.transparent,
           body: SingleChildScrollView(
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 30.0, bottom: 8.0),
+                  padding: const EdgeInsets.only(
+                      left: 12.0, right: 12.0, top: 30.0, bottom: 8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -124,7 +130,8 @@ class AppWindow extends StatelessWidget {
                           size: 30.0,
                         ),
                         onPressed: () {
-                          Provider.of<MenuController>(context, listen: true).open();
+                          Provider.of<MenuController>(context, listen: true)
+                              .open();
                         },
                       ),
                     ],
@@ -155,6 +162,7 @@ class AppWindow extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   final String category;
+  final Map<String, Widget> pages = new Map();
 
   MyHomePage(this.category, {Key key}) : super(key: key) {
     print('CONSTRUCTOR: MyHomePage');
@@ -170,23 +178,31 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
 
     print('INIT STATE: _MyHomePageState');
+    for (var menuOption in options) {
+      widget.pages[menuOption.title] = new RecipeSlides(tag: menuOption.title);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [
-        Color(0xFFFFFFFF),
-        Color(0xFFFFFFFF),
-      ], begin: Alignment.bottomCenter, end: Alignment.topCenter, tileMode: TileMode.clamp)),
+          gradient: LinearGradient(
+              colors: [
+            Color(0xFFFFFFFF),
+            Color(0xFFFFFFFF),
+          ],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              tileMode: TileMode.clamp)),
       child: Scaffold(
           backgroundColor: Colors.transparent,
           body: SingleChildScrollView(
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(left: 12.0, right: 12.0, top: 30.0, bottom: 8.0),
+                  padding: const EdgeInsets.only(
+                      left: 12.0, right: 12.0, top: 30.0, bottom: 8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -197,7 +213,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           size: 30.0,
                         ),
                         onPressed: () {
-                          Provider.of<MenuController>(context, listen: true).open();
+                          Provider.of<MenuController>(context, listen: true)
+                              .open();
                         },
                       ),
                     ],
@@ -218,7 +235,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     ],
                   ),
                 ),
-                RecipeSlides(tag: widget.category.toLowerCase())
+                widget.pages[widget.category.toLowerCase()]
               ],
             ),
           )),
