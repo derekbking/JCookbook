@@ -50,8 +50,8 @@ class _RecipeSlidesState extends State<RecipeSlides> {
   }
 
   void _queryDb() async {
-    Query query = db.collection('recipes').where('categories', arrayContains: tag)
-    ;
+    Query query =
+        db.collection('recipes').where('categories', arrayContains: tag);
 
     var snapshots = query.snapshots();
 
@@ -82,9 +82,8 @@ class _RecipeSlidesState extends State<RecipeSlides> {
   openCurrentPage() {
     Navigator.push(
         context,
-        MaterialPageRoute(
-            builder: (context) =>
-                RecipePage(slide: lastSlideList[currentPage.round()])));
+        SlideRightRoute(
+            page: RecipePage(slide: lastSlideList[currentPage.round()])));
   }
 
   @override
@@ -178,17 +177,22 @@ class CardScrollWidget extends StatelessWidget {
             start: start,
             textDirection: TextDirection.rtl,
             child: Hero(
-                transitionOnUserGestures: true,
-                tag: slides[i]["title"],
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16.0),
-                  child: Container(
-                    decoration: BoxDecoration(color: Colors.black, boxShadow: [
-                      BoxShadow(
-                          color: Colors.black12,
+              transitionOnUserGestures: true,
+              tag: slides[i]["title"],
+              child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.black,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black54,
                           offset: Offset(3.0, 6.0),
-                          blurRadius: 10.0)
-                    ]),
+                          blurRadius: 8.0,
+                        ),
+                      ]),
+                  child: Material(
+                    borderRadius: BorderRadius.circular(12),
+                    clipBehavior: Clip.antiAlias,
                     child: AspectRatio(
                       aspectRatio: cardAspectRatio,
                       child: Stack(
@@ -214,14 +218,19 @@ class CardScrollWidget extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 16.0, vertical: 8.0),
                                   child: Container(
-                                      padding:
-                                          EdgeInsets.only(left: 10, right: 10, top: 6, bottom: 4),
+                                      padding: EdgeInsets.only(
+                                          left: 10,
+                                          right: 10,
+                                          top: 6,
+                                          bottom: 4),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(8.0)),
-                                        gradient: LinearGradient(colors: [Colors.red,
-                                                        Colors.orange,
-                                                        Colors.yellow]),
+                                        gradient: LinearGradient(colors: [
+                                          Colors.red,
+                                          Colors.orange,
+                                          Colors.yellow
+                                        ]),
                                       ),
                                       child: new Material(
                                           color: Colors.transparent,
@@ -230,8 +239,7 @@ class CardScrollWidget extends StatelessWidget {
                                                   decoration: null,
                                                   color: Colors.white,
                                                   fontSize: 25.0,
-                                                  fontFamily:
-                                                      "Truckin")))),
+                                                  fontFamily: "Truckin")))),
                                 ),
                                 SizedBox(
                                   height: 10.0,
@@ -242,8 +250,8 @@ class CardScrollWidget extends StatelessWidget {
                         ],
                       ),
                     ),
-                  ),
-                )),
+                  )),
+            ),
           );
           cardList.add(cardItem);
         }
@@ -266,4 +274,31 @@ class SlideController extends ChangeNotifier {
     this.category = category;
     this.notifyListeners();
   }
+}
+
+class SlideRightRoute extends PageRouteBuilder {
+  final Widget page;
+  SlideRightRoute({this.page})
+      : super(
+            pageBuilder: (
+              BuildContext context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+            ) =>
+                page,
+            transitionsBuilder: (
+              BuildContext context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+              Widget child,
+            ) {
+              return SlideTransition(
+                textDirection: TextDirection.rtl,
+                position: Tween<Offset>(
+                  begin: const Offset(-1, 0),
+                  end: Offset.zero,
+                ).animate(animation),
+                child: child,
+              );
+            });
 }
