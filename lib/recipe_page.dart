@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cookbook/recipe_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -19,36 +18,89 @@ class _RecipePageState extends State<RecipePage> {
 
   _RecipePageState(this.slide);
 
+  List<Widget> buildSection(dynamic section) {
+    List<Widget> items = new List();
+
+    var contentData = section["content"];
+
+    if (contentData is String) {
+      items.add(new Text(contentData,
+          style: TextStyle(
+              color: Colors.grey[700],
+              fontSize: 14.0,
+              fontFamily: "Cario-SemiBold")));
+    } else if (contentData is List<dynamic>) {
+      switch (section["bullet-type"]) {
+        case "bullets":
+          contentData.asMap().forEach((index, line) {
+            items.add(
+                Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Padding(
+                  padding: EdgeInsets.only(top: 5.5),
+                  child: SizedBox(
+                    width: 5,
+                    height: 5,
+                    child: MyBullet(),
+                  )),
+              SizedBox(width: 5),
+              Flexible(
+                  child: Text(line,
+                      style: TextStyle(
+                          color: Colors.grey[700],
+                          fontSize: 14.0,
+                          fontFamily: "Cario-SemiBold")))
+            ]));
+          });
+          break;
+        case "numbered":
+          contentData.asMap().forEach((index, line) {
+            items.add(
+                Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text((index + 1).toString() + ".",
+                  style: TextStyle(
+                      color: Colors.grey[700],
+                      fontSize: 14.0,
+                      fontFamily: "Cario-SemiBold")),
+              SizedBox(width: 5),
+              Flexible(
+                  child: Text(line,
+                      style: TextStyle(
+                          color: Colors.grey[700],
+                          fontSize: 14.0,
+                          fontFamily: "Cario-SemiBold")))
+            ]));
+          });
+          break;
+        default:
+          items.add(Text("Invalid bullet type",
+              style: TextStyle(
+                  color: Colors.redAccent,
+                  fontSize: 14.0,
+                  fontFamily: "Cario-SemiBold")));
+          break;
+      }
+    }
+
+    return [
+      Text(section["title"],
+          style: TextStyle(
+              color: Colors.grey[800],
+              fontSize: 22.0,
+              fontFamily: "Cairo-SemiBold")),
+      ...items,
+      Padding(
+        padding: EdgeInsets.only(bottom: 10),
+      )
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(slide);
+    List<Widget> sections = new List();
 
-    var steps = (slide["steps"] as List<dynamic>)
-        .asMap()
-        .map((index, step) {
-          return MapEntry(
-              index,
-              Padding(
-                  padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                  child: RichText(
-                      text: TextSpan(
-                          text: step["title"] + "\n",
-                          style: TextStyle(
-                              color: Colors.grey[800],
-                              fontSize: 22.0,
-                              fontFamily: "Cairo-SemiBold",
-                              fontWeight: FontWeight.bold),
-                          children: [
-                        TextSpan(
-                            text: step["text"],
-                            style: TextStyle(
-                                color: Colors.grey[700],
-                                fontSize: 14.0,
-                                fontFamily: "Cairo-SemiBold"))
-                      ]))));
-        })
-        .values
-        .toList();
+    (slide["sections"] as List<dynamic>).forEach((section) {
+      sections.addAll(buildSection(section));
+    });
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -87,8 +139,10 @@ class _RecipePageState extends State<RecipePage> {
                                   CachedNetworkImage(
                                     imageUrl: slide["img"],
                                     fit: BoxFit.cover,
-                                    placeholder: (context, url) =>
-                                        SizedBox(width: 30, height: 30, child: CircularProgressIndicator()),
+                                    placeholder: (context, url) => SizedBox(
+                                        width: 30,
+                                        height: 30,
+                                        child: CircularProgressIndicator()),
                                     errorWidget: (context, url, error) =>
                                         Icon(Icons.error),
                                   ),
@@ -128,36 +182,24 @@ class _RecipePageState extends State<RecipePage> {
                                   )
                                 ],
                               ))))),
-              SizedBox(
-                height: 20,
-              ),
               Padding(
-                  padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                  child: RichText(
-                      text: TextSpan(
-                          text: "Ingredients",
-                          style: TextStyle(
-                              color: Colors.grey[800],
-                              fontSize: 22.0,
-                              fontFamily: "Cairo-SemiBold",
-                              fontWeight: FontWeight.bold),
-                          children: [
-                        ...(slide["ingredients"]).map((ingredient) => TextSpan(
-                                text: "\n•",
-                                style: TextStyle(
-                                    color: Colors.grey[700],
-                                    fontSize: 14.0,
-                                    fontFamily: "Roboto Mono"),
-                                children: [
-                                  TextSpan(
-                                      text: "$ingredient",
-                                      style: TextStyle(
-                                          color: Colors.grey[700],
-                                          fontSize: 14.0,
-                                          fontFamily: "Cairo-SemiBold"))
-                                ]))
-                      ]))),
-              ...steps
+                  padding: EdgeInsets.all(20),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: sections))
             ])));
+  }
+}
+
+class MyBullet extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new Container(
+      decoration: new BoxDecoration(
+        color: Colors.grey[700],
+        shape: BoxShape.circle,
+      ),
+    );
   }
 }

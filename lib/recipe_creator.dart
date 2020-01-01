@@ -13,9 +13,10 @@ class RecipeCreator extends StatefulWidget {
 class _RecipeCreatorState extends State<RecipeCreator> {
   TextEditingController _textController;
   File _image;
+  List<Map<String, dynamic>> sections = new List();
 
   Future getImage() async {
-        var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var image = await ImagePicker.pickImage(source: ImageSource.camera);
 
     setState(() {
       _image = image;
@@ -24,27 +25,60 @@ class _RecipeCreatorState extends State<RecipeCreator> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.grey[100],
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Center(child: Text("Add an image", style: TextStyle(color: Colors.black, fontStyle: null, decorationStyle: null, decoration: null))),
-          GestureDetector(
-              onTap: () => {
-                getImage()
-              },
-              child: Container(
-                  constraints: BoxConstraints.expand(height: 150.0),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: _image == null ? AssetImage("assets/no_image.jpg") : FileImage(_image),
-                      fit: BoxFit.fitWidth,
-                    ),
-                  ))),
-        ],
-      ),
-    );
+    var renderSections = sections
+        .asMap()
+        .map((index, section) {
+          return MapEntry(
+              index,
+              Column(children: [
+                TextField(
+                    decoration: InputDecoration(
+                        border: InputBorder.none, hintText: 'Section Title'))
+              ]));
+        })
+        .values
+        .toList();
+
+    return Material(
+        color: Colors.grey[100],
+        child: Padding(
+          padding: EdgeInsets.all(30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "Create a New Recipe",
+                style: TextStyle(fontSize: 22.0),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 20,),
+              Card(
+                  child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: TextField(
+                          decoration: InputDecoration(
+                              border: InputBorder.none, hintText: 'Title')))),
+              Card(
+                  child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: TextField(
+                          decoration: InputDecoration(
+                              border: InputBorder.none, hintText: 'Image')))),
+              Text("Sections", style: TextStyle(fontSize: 18.0)),
+              Card(child: new Column(children: <Widget>[
+                ...renderSections
+              ],)),
+              RaisedButton(
+                child: Text("Add Section"),
+                onPressed: () {
+                  setState(() {
+                    sections.add(Map());
+                  });
+                },
+              )
+            ],
+          ),
+        ));
   }
 }
