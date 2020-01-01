@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cookbook/recipe_page.dart';
-import 'package:cookbook/recipe_card.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +50,7 @@ class _RecipeSlidesState extends State<RecipeSlides> {
   }
 
   void _queryDb() async {
-    Query query = db.collection('recipes').where('tags', arrayContains: tag);
+    Query query = db.collection('recipes').where('categories', arrayContains: tag);
 
     var snapshots = query.snapshots();
 
@@ -84,7 +83,7 @@ class _RecipeSlidesState extends State<RecipeSlides> {
         context,
         MaterialPageRoute(
             builder: (context) =>
-                RecipePage(slide: lastSlideList[currentPage.toInt()])));
+                RecipePage(slide: lastSlideList[currentPage.round()])));
   }
 
   @override
@@ -145,126 +144,111 @@ class CardScrollWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-          // Navigator.push(context, CupertinoPageRoute(builder: (context) => RecipePage(slide: lastSlid[currentPage])));
-        },
-        child: AspectRatio(
-          aspectRatio: widgetAspectRatio,
-          child: LayoutBuilder(builder: (context, contraints) {
-            var width = contraints.maxWidth;
-            var height = contraints.maxHeight;
+    return AspectRatio(
+      aspectRatio: widgetAspectRatio,
+      child: LayoutBuilder(builder: (context, contraints) {
+        var width = contraints.maxWidth;
+        var height = contraints.maxHeight;
 
-            var safeWidth = width - 2 * padding;
-            var safeHeight = height - 2 * padding;
+        var safeWidth = width - 2 * padding;
+        var safeHeight = height - 2 * padding;
 
-            var heightOfPrimaryCard = safeHeight;
-            var widthOfPrimaryCard = heightOfPrimaryCard * cardAspectRatio;
+        var heightOfPrimaryCard = safeHeight;
+        var widthOfPrimaryCard = heightOfPrimaryCard * cardAspectRatio;
 
-            var primaryCardLeft = safeWidth - widthOfPrimaryCard;
-            var horizontalInset = primaryCardLeft / 2;
+        var primaryCardLeft = safeWidth - widthOfPrimaryCard;
+        var horizontalInset = primaryCardLeft / 2;
 
-            List<Widget> cardList = new List();
+        List<Widget> cardList = new List();
 
-            for (var i = 0; i < slides.length; i++) {
-              var delta = i - currentPage;
-              bool isOnRight = delta > 0;
+        for (var i = 0; i < slides.length; i++) {
+          var delta = i - currentPage;
+          bool isOnRight = delta > 0;
 
-              var start = padding +
-                  max(
-                      primaryCardLeft -
-                          horizontalInset * -delta * (isOnRight ? 15 : 1),
-                      0.0);
+          var start = padding +
+              max(
+                  primaryCardLeft -
+                      horizontalInset * -delta * (isOnRight ? 15 : 1),
+                  0.0);
 
-              var cardItem = Positioned.directional(
-                  top: padding + verticalInset * max(-delta, 0.0),
-                  bottom: padding + verticalInset * max(-delta, 0.0),
-                  start: start,
-                  textDirection: TextDirection.rtl,
-                  child: GestureDetector(
-                    onTap: () {
-                      print("Clicked!");
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) =>
-                                  RecipePage(slide: slides[i])));
-                    },
-                    child: Hero(
-                        transitionOnUserGestures: true,
-                        tag: slides[i]["title"],
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(16.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.black,
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: Colors.black12,
-                                      offset: Offset(3.0, 6.0),
-                                      blurRadius: 10.0)
-                                ]),
-                            child: AspectRatio(
-                              aspectRatio: cardAspectRatio,
-                              child: Stack(
-                                fit: StackFit.expand,
-                                children: <Widget>[
-                                  CachedNetworkImage(
-                                    imageUrl: slides[i]["img"],
-                                    fit: BoxFit.cover,
-                                    placeholder: (context, url) =>
-                                        SizedBox(width: 30, height: 30, child: Container(color: Colors.grey)),
-                                    errorWidget: (context, url, error) =>
-                                        Icon(Icons.error),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.bottomLeft,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 16.0, vertical: 8.0),
-                                          child: Container(
-                                              padding: EdgeInsets.only(
-                                                  left: 10, right: 10),
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(8.0)),
-                                                color: Colors.black87,
-                                              ),
-                                              child: new Material(
-                                                  color: Colors.transparent,
-                                                  child: Text(
-                                                      slides[i]["title"],
-                                                      style: TextStyle(
-                                                          decoration: null,
-                                                          color: Colors.white,
-                                                          fontSize: 25.0,
-                                                          fontFamily:
-                                                              "Cairo-SemiBold")))),
-                                        ),
-                                        SizedBox(
-                                          height: 10.0,
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+          var cardItem = Positioned.directional(
+            top: padding + verticalInset * max(-delta, 0.0),
+            bottom: padding + verticalInset * max(-delta, 0.0),
+            start: start,
+            textDirection: TextDirection.rtl,
+            child: Hero(
+                transitionOnUserGestures: true,
+                tag: slides[i]["title"],
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16.0),
+                  child: Container(
+                    decoration: BoxDecoration(color: Colors.black, boxShadow: [
+                      BoxShadow(
+                          color: Colors.black12,
+                          offset: Offset(3.0, 6.0),
+                          blurRadius: 10.0)
+                    ]),
+                    child: AspectRatio(
+                      aspectRatio: cardAspectRatio,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: <Widget>[
+                          CachedNetworkImage(
+                            imageUrl: slides[i]["img"],
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => SizedBox(
+                                width: 30,
+                                height: 30,
+                                child: Container(color: Colors.grey)),
+                            errorWidget: (context, url, error) =>
+                                Icon(Icons.error),
                           ),
-                        )),
-                  ));
-              cardList.add(cardItem);
-            }
-            return Stack(
-              children: cardList,
-            );
-          }),
-        ));
+                          Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16.0, vertical: 8.0),
+                                  child: Container(
+                                      padding:
+                                          EdgeInsets.only(left: 10, right: 10),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(8.0)),
+                                        color: Colors.black87,
+                                      ),
+                                      child: new Material(
+                                          color: Colors.transparent,
+                                          child: Text(slides[i]["title"],
+                                              style: TextStyle(
+                                                  decoration: null,
+                                                  color: Colors.white,
+                                                  fontSize: 25.0,
+                                                  fontFamily:
+                                                      "Cairo-SemiBold")))),
+                                ),
+                                SizedBox(
+                                  height: 10.0,
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                )),
+          );
+          cardList.add(cardItem);
+        }
+        return Stack(
+          children: cardList,
+        );
+      }),
+    );
   }
 }
 

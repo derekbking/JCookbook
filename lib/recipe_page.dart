@@ -32,7 +32,7 @@ class _RecipePageState extends State<RecipePage> {
                   padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
                   child: RichText(
                       text: TextSpan(
-                          text: "Step ${index + 1}\n",
+                          text: step["title"] + "\n",
                           style: TextStyle(
                               color: Colors.grey[800],
                               fontSize: 22.0,
@@ -40,7 +40,7 @@ class _RecipePageState extends State<RecipePage> {
                               fontWeight: FontWeight.bold),
                           children: [
                         TextSpan(
-                            text: step,
+                            text: step["text"],
                             style: TextStyle(
                                 color: Colors.grey[700],
                                 fontSize: 14.0,
