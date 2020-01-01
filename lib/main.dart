@@ -161,7 +161,7 @@ class MyHomePage extends StatefulWidget {
   final String category;
   final Map<String, Widget> pages = new Map();
 
-  MyHomePage(this.category, {Key key}) : super(key: key)
+  MyHomePage(this.category, {Key key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
