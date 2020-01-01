@@ -28,28 +28,33 @@ class _RecipePageState extends State<RecipePage> {
           style: TextStyle(
               color: Colors.grey[700],
               fontSize: 14.0,
-              fontFamily: "Cario-SemiBold")));
+              height: 1.5,
+              fontFamily: "Montserrat Regular")));
     } else if (contentData is List<dynamic>) {
       switch (section["bullet-type"]) {
         case "bullets":
           contentData.asMap().forEach((index, line) {
-            items.add(
-                Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Padding(
-                  padding: EdgeInsets.only(top: 5.5),
-                  child: SizedBox(
-                    width: 5,
-                    height: 5,
-                    child: MyBullet(),
-                  )),
-              SizedBox(width: 5),
-              Flexible(
-                  child: Text(line,
-                      style: TextStyle(
-                          color: Colors.grey[700],
-                          fontSize: 14.0,
-                          fontFamily: "Cario-SemiBold")))
-            ]));
+            items.add(Padding(
+                padding: EdgeInsets.only(bottom: 0),
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                          padding: EdgeInsets.only(top: 14.5),
+                          child: SizedBox(
+                            width: 5,
+                            height: 5,
+                            child: MyBullet(),
+                          )),
+                      SizedBox(width: 10),
+                      Flexible(
+                          child: Text(line,
+                              style: TextStyle(
+                                  color: Colors.grey[700],
+                                  height: 2,
+                                  fontSize: 14.0,
+                                  fontFamily: "Montserrat Regular")))
+                    ])));
           });
           break;
         case "numbered":
@@ -59,15 +64,17 @@ class _RecipePageState extends State<RecipePage> {
               Text((index + 1).toString() + ".",
                   style: TextStyle(
                       color: Colors.grey[700],
+                      height: 2,
                       fontSize: 14.0,
-                      fontFamily: "Cario-SemiBold")),
-              SizedBox(width: 5),
+                      fontFamily: "Montserrat Regular")),
+              SizedBox(width: 10),
               Flexible(
                   child: Text(line,
                       style: TextStyle(
                           color: Colors.grey[700],
+                          height: 2,
                           fontSize: 14.0,
-                          fontFamily: "Cario-SemiBold")))
+                          fontFamily: "Montserrat Regular")))
             ]));
           });
           break;
@@ -76,7 +83,7 @@ class _RecipePageState extends State<RecipePage> {
               style: TextStyle(
                   color: Colors.redAccent,
                   fontSize: 14.0,
-                  fontFamily: "Cario-SemiBold")));
+                  fontFamily: "Montserrat Regular")));
           break;
       }
     }
@@ -84,9 +91,7 @@ class _RecipePageState extends State<RecipePage> {
     return [
       Text(section["title"],
           style: TextStyle(
-              color: Colors.grey[800],
-              fontSize: 22.0,
-              fontFamily: "Cairo-SemiBold")),
+              color: Colors.grey[800], fontSize: 22.0, fontFamily: "Truckin")),
       ...items,
       Padding(
         padding: EdgeInsets.only(bottom: 10),
@@ -158,13 +163,17 @@ class _RecipePageState extends State<RecipePage> {
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 16.0, vertical: 8.0),
                                           child: Container(
-                                              padding: EdgeInsets.only(
-                                                  left: 10, right: 10),
+                                              padding: EdgeInsets.only(left: 10, right: 10, top: 6, bottom: 4),
                                               decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(8.0)),
-                                                color: Colors.black87,
-                                              ),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(8.0)),
+                                                  gradient: LinearGradient(
+                                                      colors: [
+                                                        Colors.red,
+                                                        Colors.orange,
+                                                        Colors.yellow
+                                                      ])),
                                               child: new Material(
                                                   color: Colors.transparent,
                                                   child: Text(slide["title"],
@@ -172,7 +181,7 @@ class _RecipePageState extends State<RecipePage> {
                                                           color: Colors.white,
                                                           fontSize: 25.0,
                                                           fontFamily:
-                                                              "Cairo-SemiBold")))),
+                                                              "Truckin")))),
                                         ),
                                         SizedBox(
                                           height: 10.0,

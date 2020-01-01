@@ -60,13 +60,10 @@ class _CookbookState extends State<Cookbook> with TickerProviderStateMixin {
   void initState() {
     super.initState();
 
-    print('INIT STATE: Cookbook');
-
     contentScreen = AppWindow(slideController.category, key: key);
 
     slideController.addListener(() {
       setState(() {
-        print('Setting state');
         key = GlobalKey<_CookbookState>();
         contentScreen = AppWindow(slideController.category, key: key);
       });
@@ -164,9 +161,7 @@ class MyHomePage extends StatefulWidget {
   final String category;
   final Map<String, Widget> pages = new Map();
 
-  MyHomePage(this.category, {Key key}) : super(key: key) {
-    print('CONSTRUCTOR: MyHomePage');
-  }
+  MyHomePage(this.category, {Key key}) : super(key: key)
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -177,7 +172,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
 
-    print('INIT STATE: _MyHomePageState');
     for (var menuOption in options) {
       widget.pages[menuOption.title] = new RecipeSlides(tag: menuOption.title);
     }

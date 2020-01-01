@@ -50,7 +50,8 @@ class _RecipeSlidesState extends State<RecipeSlides> {
   }
 
   void _queryDb() async {
-    Query query = db.collection('recipes').where('categories', arrayContains: tag);
+    Query query = db.collection('recipes').where('categories', arrayContains: tag)
+    ;
 
     var snapshots = query.snapshots();
 
@@ -214,11 +215,13 @@ class CardScrollWidget extends StatelessWidget {
                                       horizontal: 16.0, vertical: 8.0),
                                   child: Container(
                                       padding:
-                                          EdgeInsets.only(left: 10, right: 10),
+                                          EdgeInsets.only(left: 10, right: 10, top: 6, bottom: 4),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(8.0)),
-                                        color: Colors.black87,
+                                        gradient: LinearGradient(colors: [Colors.red,
+                                                        Colors.orange,
+                                                        Colors.yellow]),
                                       ),
                                       child: new Material(
                                           color: Colors.transparent,
@@ -228,7 +231,7 @@ class CardScrollWidget extends StatelessWidget {
                                                   color: Colors.white,
                                                   fontSize: 25.0,
                                                   fontFamily:
-                                                      "Cairo-SemiBold")))),
+                                                      "Truckin")))),
                                 ),
                                 SizedBox(
                                   height: 10.0,

@@ -31,6 +31,15 @@ flutter:
     - family: Roboto Mono
       fonts:
         - asset: assets/RobotoMono-Regular.ttf
+    - family: Montserrat Regular
+      fonts:
+        - asset: assets/Montserrat-Regular.ttf
+    - family: Ropa Sans
+      fonts:
+        - asset: assets/RopaSans-Regular.ttf
+    - family: Truckin
+      fonts:
+        - asset: assets/KeeponTruckin.ttf
     - family:  MenuIcons
       fonts:
        - asset: assets/MenuIcons.ttf

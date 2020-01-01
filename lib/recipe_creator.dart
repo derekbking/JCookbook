@@ -30,11 +30,11 @@ class _RecipeCreatorState extends State<RecipeCreator> {
         .map((index, section) {
           return MapEntry(
               index,
-              Column(children: [
+              Card(child: Column(children: [
                 TextField(
                     decoration: InputDecoration(
                         border: InputBorder.none, hintText: 'Section Title'))
-              ]));
+              ])));
         })
         .values
         .toList();
@@ -49,7 +49,10 @@ class _RecipeCreatorState extends State<RecipeCreator> {
             children: <Widget>[
               Text(
                 "Create a New Recipe",
-                style: TextStyle(fontSize: 22.0),
+                style: TextStyle(
+                  color: Colors.grey[800],
+                  fontSize: 22.0,
+                  fontFamily: "Cairo-SemiBold"),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20,),
@@ -66,9 +69,7 @@ class _RecipeCreatorState extends State<RecipeCreator> {
                           decoration: InputDecoration(
                               border: InputBorder.none, hintText: 'Image')))),
               Text("Sections", style: TextStyle(fontSize: 18.0)),
-              Card(child: new Column(children: <Widget>[
-                ...renderSections
-              ],)),
+              ...renderSections,
               RaisedButton(
                 child: Text("Add Section"),
                 onPressed: () {
