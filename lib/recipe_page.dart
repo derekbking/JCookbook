@@ -118,7 +118,7 @@ class _RecipePageState extends State<RecipePage> {
     });
 
     return Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.pop(context);

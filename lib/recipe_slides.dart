@@ -98,7 +98,7 @@ class _RecipeSlidesState extends State<RecipeSlides> {
         Positioned.fill(
             child: GestureDetector(
           onTap: () {
-            openCurrentPage();
+              openCurrentPage();
           },
           child: PageView.builder(
             itemCount: currentLength,
@@ -295,10 +295,15 @@ class SlideRightRoute extends PageRouteBuilder {
               return SlideTransition(
                 textDirection: TextDirection.rtl,
                 position: Tween<Offset>(
-                  begin: const Offset(-1, 0),
+                  begin: const Offset(0, 1),
                   end: Offset.zero,
-                ).animate(animation),
+                ).animate(CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.fastOutSlowIn,
+                )),
                 child: child,
               );
             });
+  @override
+  bool get opaque => false;
 }
