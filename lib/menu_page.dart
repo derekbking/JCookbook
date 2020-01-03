@@ -31,7 +31,7 @@ class MenuScreen extends StatelessWidget {
                   'Jordyn\'s Cookbook',
                   style: TextStyle(
                     fontSize: 20,
-                    fontWeight: FontWeight.w300
+                    fontFamily: "Truckin"
                   ),
                 )
               ],

@@ -98,7 +98,7 @@ class _RecipeSlidesState extends State<RecipeSlides> {
         Positioned.fill(
             child: GestureDetector(
           onTap: () {
-              openCurrentPage();
+            openCurrentPage();
           },
           child: PageView.builder(
             itemCount: currentLength,
@@ -227,9 +227,29 @@ class CardScrollWidget extends StatelessWidget {
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(8.0)),
                                         gradient: LinearGradient(colors: [
-                                          Colors.red,
-                                          Colors.orange,
-                                          Colors.yellow
+                                          // BREAKFAST
+                                          Colors.blue,
+                                          Colors.purple,
+                                          Colors.pink
+
+                                          // DRINKS
+                                          // Colors.red,
+                                          // Colors.orange,
+                                          // Colors.yellow
+
+                                          //  MEALS
+                                        //  Color(0xFFb6e6fa),
+                                        //   Color(0xFF93E9BE),
+                                        //   Color(0xFF23c262)
+
+                                          // SNACKS
+                                          // Colors.deepPurple,
+                                          // Colors.pink
+
+                                          // DESSERTS
+                                          // Colors.pink,
+                                          // Colors.yellow[200]
+
                                         ]),
                                       ),
                                       child: new Material(

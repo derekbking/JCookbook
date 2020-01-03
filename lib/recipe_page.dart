@@ -90,7 +90,8 @@ class _RecipePageState extends State<RecipePage> {
 
     return [
       Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           margin: EdgeInsets.only(top: 20, left: 0, right: 0, bottom: 0),
           color: Colors.grey[100],
           child: Padding(
@@ -211,10 +212,18 @@ class _RecipePageState extends State<RecipePage> {
                                           )
                                         ],
                                       ))))),
-                      Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: sections)
+                      SizedBox(height: 1000, child: PageView(
+                        children: <Widget>[
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: sections),
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: sections)
+                        ],
+                      ))
                     ]))));
   }
 }
