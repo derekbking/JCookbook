@@ -1,6 +1,6 @@
 name: cookbook
 description: Jordyn's personal cookbook :)
-version: 1.0.3+1
+version: 1.0.3+3
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -15,8 +15,14 @@ dependencies:
   cached_network_image: ^2.0.0-rc
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.7.4
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/icon.jpg"
 
 flutter:
   uses-material-design: true
