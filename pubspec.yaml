@@ -1,6 +1,6 @@
 name: cookbook
 description: Jordyn's personal cookbook :)
-version: 1.0.3+3
+version: 1.0.4+1
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
